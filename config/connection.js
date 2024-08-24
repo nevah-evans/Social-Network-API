@@ -1,6 +1,6 @@
-const {connect, connection} = require('mongoose');
+const { connect, connection } = require("mongoose");
 
-const connectString = 'mongoose://127.0.0.1:27017/studentsDB';
+const connectString = "mongoose://127.0.0.1:27017/studentsDB";
 
 connect(connectString);
 
