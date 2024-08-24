@@ -45,7 +45,7 @@ module.exports = {
   async updateUser(req, res) {
     try {
       const user = await User.findOneAndUpdate(
-        { _id: req.params.uderId },
+        { _id: req.params.userId },
         { $set: req.body },
         { runValidators: true, new: true }
       );
@@ -53,6 +53,8 @@ module.exports = {
       if (!user) {
         res.status(404).json({ messge: "User not found!" });
       }
+
+      res.json(user);
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
@@ -78,8 +80,6 @@ module.exports = {
 
   //add a friend
   async addFriend(req, res) {
-    console.log("Add a friend?");
-    console.log(req.params);
     try {
       const friend = await User.findOneAndUpdate(
         { _id: req.params.userId },
