@@ -21,12 +21,12 @@ module.exports = {
 
       if (!thought) {
         return (
-          res.status(404),
-          json({ message: "Smooooth brain, no thought found!" })
+          res.status(404).json({ message: "Smooooth brain, no thought found!" })
         );
       }
 
       res.json(thought);
+
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
@@ -36,7 +36,7 @@ module.exports = {
   // create a thought
   async createThought(req, res) {
     try {
-      const thought = await Thought.create(req, body);
+      const thought = await Thought.create(req.body);
       res.json(thought);
     } catch (err) {
       console.log(err);
@@ -67,7 +67,7 @@ module.exports = {
   //delete a thought
   async deleteThought(req, res) {
     try {
-      const thought = await Thought.findOneAndRemove({
+      const thought = await Thought.findOneAndUpdate({
         _id: req.params.thoughtId,
       });
 
@@ -86,14 +86,13 @@ module.exports = {
     try {
       const reaction = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $addToSet: { reactions: req.params.reactionId } },
+        { $addToSet: { reactions: req.body } },
         { runValidators: true, new: true }
       );
 
       if (!reaction) {
         return (
-          res.status(404),
-          json({ messgae: "Failed to add reaction. No thought with that Id!" })
+          res.status(404).json({ messgae: "Failed to add reaction. No thought with that Id!" })
         );
       }
       res.json(reaction);
@@ -108,7 +107,7 @@ module.exports = {
     try {
       const xreaction = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $pull: { reactions: req.params.reactionId } },
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
         { runValidators: true, new: true }
       );
 
@@ -119,7 +118,8 @@ module.exports = {
             messaage: "Failed to delete reaction. No thought with that Id!",
           });
       }
-      res.json(xreaction);
+    
+      res.json({message: 'Reaction has been deleted!'});
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);

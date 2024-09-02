@@ -11,15 +11,21 @@ const {
 } = require('../../controller/thoughtController.js');
 
 ///api/thoughts
-router.route("/thoughts").get(getAllThoughts).post(createThought);
+router.route("/").get(getAllThoughts).post(createThought);
 
 
 // /api/thoughts/:thoughtsId
-router.route("/:thoughts").get(getOneThought).put(updateThought).delete(deleteThought);
+router.route("/:thoughtId").get(getOneThought).put(updateThought).delete(deleteThought);
 
 
 // /api/thoughts/:thoughtsId/reactions
-router.route("/thoughts/:thoughtsId/reactions").post(addReaction).delete(deleteReaction);
+router.route("/:thoughtId/reactions").post(addReaction)
+
+// /api/thoughts/:thoughtsId/reactions/:reactionId
+router.route('/:thoughtId/reactions/:reactionId').delete(deleteReaction);
 
 
 module.exports = router;
+
+// 66d5f0e38e7407d3f3d6dc80 main thought
+
